@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.urls import reverse
+from datetime import date
 
 zodiac_dict = {
     'aries': 'Овен - первый знак зодиака, планета Марс (с 21 марта по 20 апреля).',
@@ -15,6 +16,13 @@ zodiac_dict = {
     'capricorn': 'Козерог - десятый знак зодиака, планета Сатурн (с 23 декабря по 20 января).',
     'aquarius': 'Водолей - одиннадцатый знак зодиака, планеты Уран и Сатурн (с 21 января по 19 февраля).',
     'pisces': 'Рыбы - двенадцатый знак зодиака, планеты Юпитер (с 20 февраля по 20 марта).',
+}
+
+types_dict = {
+    'fire': ['aries', 'leo', 'sagittarius'],
+    'earth': ['taurus', 'virgo', 'capricorn'],
+    'air': ['libra', 'aquarius', 'gemini'],
+    'water': ['pisces', 'cancer', 'scorpio']
 }
 
 
@@ -43,4 +51,29 @@ def get_info_abaut_sign_zodiac_by_number(request, sign_zodiac: int):
     return HttpResponseRedirect(redirect_url)
 
 def type(request):
-    return HttpResponse(f"""Земля<br>Воздух""")
+    types = list(types_dict)
+    type_elements = ''
+    for type_el in types:
+        redirect_path = reverse('element-name', args=(type_el,))
+        type_elements += f'''<li><a href ='{redirect_path} '>{type_el.title()}</a></li>'''
+    response = f'''<ul>{type_elements}</ul>'''
+    return HttpResponse(response)
+
+def get_element(request, element: str):
+    get_el = types_dict.get(element, None)
+    res = ''
+    for el in get_el:
+        redirect_path = reverse('horoscope-name', args=(el,))
+        res += f'''<li><a href = '{redirect_path}'>{el.title()}</a></li>'''
+    response = f'''<ol>{res}</ol>'''
+    return HttpResponse(response)
+
+
+def get_sign_by_date(request, day, month):
+    my_date = date(2024, month, day)
+
+    #my_date = my_date.replace(year=None)
+
+    day_of_year = my_date.timetuple().tm_yday
+    return HttpResponse(f'''{day_of_year}''')
+
