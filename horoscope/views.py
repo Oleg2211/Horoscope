@@ -18,6 +18,21 @@ zodiac_dict = {
     'pisces': 'Рыбы - двенадцатый знак зодиака, планеты Юпитер (с 20 февраля по 20 марта).',
 }
 
+zodiac_dates = {
+    'aries': [date(2025, 3, 21).timetuple().tm_yday, date(2025, 4, 20).timetuple().tm_yday],
+    'taurus': [date(2025, 4, 21).timetuple().tm_yday, date(2025, 5, 21).timetuple().tm_yday],
+    'gemini': [date(2025, 5, 22).timetuple().tm_yday, date(2025, 6, 21).timetuple().tm_yday],
+    'cancer': [date(2025, 6, 22).timetuple().tm_yday, date(2025, 7, 22).timetuple().tm_yday],
+    'leo': [date(2025, 7, 23).timetuple().tm_yday, date(2025, 8, 21).timetuple().tm_yday],
+    'virgo': [date(2025, 8, 22).timetuple().tm_yday, date(2025, 9, 23).timetuple().tm_yday],
+    'libra': [date(2025, 9, 24).timetuple().tm_yday, date(2025, 10, 23).timetuple().tm_yday],
+    'scorpio': [date(2025, 10, 24).timetuple().tm_yday, date(2025, 11, 22).timetuple().tm_yday],
+    'sagittarius': [date(2025, 11, 23).timetuple().tm_yday, date(2025, 12, 22).timetuple().tm_yday],
+    'capricorn': [date(2025, 12, 23).timetuple().tm_yday, date(2025, 1, 20).timetuple().tm_yday],
+    'aquarius': [date(2025, 1, 21).timetuple().tm_yday, date(2025, 2, 19).timetuple().tm_yday],
+    'pisces': [date(2025, 2, 20).timetuple().tm_yday, date(2025, 3, 20).timetuple().tm_yday]
+}
+
 types_dict = {
     'fire': ['aries', 'leo', 'sagittarius'],
     'earth': ['taurus', 'virgo', 'capricorn'],
@@ -70,10 +85,13 @@ def get_element(request, element: str):
 
 
 def get_sign_by_date(request, day, month):
-    my_date = date(2024, month, day)
+    my_date = date(2024, month, day).timetuple().tm_yday
+    for k, v in zodiac_dates.items():
+        if my_date in range(v[0], v[1]+2):
+            redirect_path = reverse('horoscope-name', args=(k,))
+            return HttpResponse(f''' День: {day} <br>
+                                     Месяц: {month}<br>
+            Знак зодика: <a href ='{redirect_path}'>{k.title()}</a>''')
 
-    #my_date = my_date.replace(year=None)
-
-    day_of_year = my_date.timetuple().tm_yday
-    return HttpResponse(f'''{day_of_year}''')
+    return HttpResponse("Введите коректную дату")
 
