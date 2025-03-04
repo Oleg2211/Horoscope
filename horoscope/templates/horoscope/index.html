@@ -2,9 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Гороскоп</title>
+    <title>Меню</title>
 </head>
 <body>
+
+<ul>
+    {% for zodiac in zodiacs %}
+       <li><a href="{% url 'horoscope-name' sign_zodiac=zodiac %}">{{zodiac|title}}</a> </li>
+
+    {% endfor %}
+</ul>
 
 </body>
 </html>

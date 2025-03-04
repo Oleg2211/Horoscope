@@ -45,15 +45,20 @@ types_dict = {
 
 def index(request):
     zodiacs = list(zodiac_dict)
-    li_elements = ''
-    for sign in zodiacs:
-        redirect_path = reverse('horoscope-name', args=(sign,))
-        li_elements += f'''<li><a href= "{redirect_path}">{sign.title()}</a></li>'''
-    response = f'''<ol>{li_elements}</ol>'''
-    return HttpResponse(response)
+    context = {
+
+        'zodiacs': zodiacs
+    }
+
+    return render(request, 'horoscope/index.html', context=context)
 
 def get_info_abaut_sign_zodiac(requesrt, sign_zodiac: str):
-    return render(requesrt, "horoscope/info_zodiac.html") #03.03/2025
+    description = zodiac_dict.get(sign_zodiac)
+    data = {
+        'description_zodiac': description,
+        'sign': sign_zodiac
+    }
+    return render(requesrt, "horoscope/info_zodiac.html", context=data) #04.03/2025
 
 
 
