@@ -1,20 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Гороскоп для {{sign|capfirst}}</title>
-</head>
-<body>
-    <h1>Приложение гороскоп</h1>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css_addition%}
+<link rel="stylesheet" href=" {% static 'horoscope/css/info.css' %} ">
+{% endblock %}
+
+
+
+{% block title %}
+    Гороскоп для {{sign|capfirst}}
+
+{% endblock %}
+
+
+
+{% block content %}
+
+
+    {% include 'includes/navbar.html' %}
+    <h1>{{sign_name}}</h1>
+
     {% if description_zodiac is None %}
         <h2>Не правильный знак зодиака {{sign|capfirst}}</h2>
 
     {% else %}
-        <h2>{{description_zodiac|title}}</h2>
+        <h2>{{description_zodiac|capfirst}}</h2>
 
     {% endif %}
 
-
-
-</body>
-</html>
+{% endblock %}

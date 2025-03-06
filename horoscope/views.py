@@ -49,14 +49,18 @@ def index(request):
 
         'zodiacs': zodiacs
     }
-
+    #return render(request, 'base.html')
     return render(request, 'horoscope/index.html', context=context)
 
 def get_info_abaut_sign_zodiac(requesrt, sign_zodiac: str):
     description = zodiac_dict.get(sign_zodiac)
+    zodiacs = list(zodiac_dict)
     data = {
         'description_zodiac': description,
-        'sign': sign_zodiac
+        'sign': sign_zodiac,
+        'zodiacs': zodiacs,
+        'sign_name':description.split()[0]
+
     }
     return render(requesrt, "horoscope/info_zodiac.html", context=data) #04.03/2025
 

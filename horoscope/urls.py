@@ -2,7 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.index),
+    path('', views.index, name='horoscope-index'),
     path('<int:day>/<int:month>', views.get_sign_by_date),
     path('type/', views.type),
     path('type/<element>/', views.get_element, name='element-name'),
